@@ -21,10 +21,10 @@ const Navbar = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
-    }, 60000); // Change color every minute
+    }, 600); // Change color every minute
 
     return () => clearInterval(interval);
-  }, []);
+  }, [colors.length]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
