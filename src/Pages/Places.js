@@ -1,4 +1,3 @@
-// src/Pages/Places.js
 import React, { useState, useContext, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Modal, Spinner, Alert } from 'react-bootstrap';
 import { AuthContext } from '../Components/AuthContext';
@@ -13,13 +12,12 @@ import place2 from '../assets/places/place2.jpeg';
 import place3 from '../assets/places/place3.jpeg';
 import place4 from '../assets/places/place4.jpeg';
 
-// ... rest of your Places.js code ...
 const attractionCategories = [
   {
     id: 1,
     title: "Wildlife & Tourism",
     description: "Experience Kenya's incredible wildlife in their natural habitats.",
-    image: place1,
+    image: place2,
     places: [
       {
         id: 1,
@@ -28,14 +26,13 @@ const attractionCategories = [
         image: place1,
         rating: 4.8
       },
-      // Add more places...
     ]
   },
   {
     id: 2,
     title: "Coastal Beaches",
     description: "Relax on Kenya's pristine white sandy beaches.",
-    image: place2,
+    image: place1,
     places: [
       {
         id: 2,
@@ -79,9 +76,10 @@ const attractionCategories = [
 ];
 
 export default function Places() {
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [showPlaceDetails, setShowPlaceDetails] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -95,7 +93,15 @@ export default function Places() {
       return () => clearTimeout(timer);
     }
   }, [success]);
-  
+
+  const handleViewMore = (category) => {
+    if (!currentUser) {
+      setShowAuthModal(true);
+    } else {
+      setSelectedCategory(category);
+      setShowPlaceDetails(true);
+    }
+  };
 
   const handleInterest = async (place) => {
     if (!currentUser) {
@@ -110,15 +116,15 @@ export default function Places() {
     try {
       await setDoc(doc(db, 'interests', `${currentUser.uid}_${place.id}`), {
         userId: currentUser.uid,
+        userName: currentUser.displayName || currentUser.email.split('@')[0], // Use displayName or fallback to email prefix
         userEmail: currentUser.email,
         placeId: place.id,
         placeName: place.name,
         timestamp: serverTimestamp(),
         status: 'pending'
       });
-      
-      setSuccess(`Success! We've noted your interest in ${place.name}. We'll contact you soon!`);
-      // Close the modal after successful submission
+
+      setSuccess(`Success! ${currentUser.displayName || 'You'} have shown interest in ${place.name}. We'll contact you soon!`);
       setTimeout(() => {
         setShowPlaceDetails(false);
       }, 2000);
@@ -130,32 +136,28 @@ export default function Places() {
     }
   };
 
-  const handleViewMore = (place) => {
-    setSelectedPlace(place);
-    setShowPlaceDetails(true);
-  };
-
   return (
-    <Container className="py-5">
-      <h1 className="text-center mb-4">Explore Kenya's Attractions</h1>
+    <Container className="places-container py-5">
+      <h1 className="places-title text-center mb-4">Explore Kenya's Attractions</h1>
+
       {error && <Alert variant="danger" onClose={() => setError('')} dismissible>{error}</Alert>}
       {success && <Alert variant="success" onClose={() => setSuccess('')} dismissible>{success}</Alert>}
-      
-      <Row xs={1} md={2} lg={4} className="g-4">
+
+      <Row xs={1} md={2} lg={2} className="g-4">
         {attractionCategories.map((category) => (
           <Col key={category.id}>
-            <Card className="h-100">
-              <Card.Img 
-                variant="top" 
-                src={category.image} 
-                style={{ height: '200px', objectFit: 'cover' }} 
+            <Card className="place-card h-100">
+              <Card.Img
+                variant="top"
+                src={category.image}
+                className="place-img"
               />
               <Card.Body className="d-flex flex-column">
                 <Card.Title>{category.title}</Card.Title>
                 <Card.Text>{category.description}</Card.Text>
-                <Button 
-                  variant="primary" 
-                  className="mt-auto"
+                <Button
+                  variant="primary"
+                  className="mt-auto view-more-btn"
                   onClick={() => handleViewMore(category)}
                 >
                   View More
@@ -166,20 +168,58 @@ export default function Places() {
         ))}
       </Row>
 
+      {/* Auth Prompt Modal */}
+      <Modal
+        show={showAuthModal}
+        onHide={() => setShowAuthModal(false)}
+        centered
+        size="sm"
+        className="auth-prompt-modal"
+      >
+        <Modal.Header closeButton className="auth-modal-header">
+          <Modal.Title className="auth-modal-title">Access Required</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="auth-modal-body">
+          <p>Please log in or register to view place details.</p>
+          <div className="auth-buttons">
+            <Button
+              variant="primary"
+              className="auth-btn"
+              onClick={() => {
+                setShowAuthModal(false);
+                setShowLogin(true);
+              }}
+            >
+              Login
+            </Button>
+            <Button
+              variant="outline-primary"
+              className="auth-btn"
+              onClick={() => {
+                setShowAuthModal(false);
+                setShowRegister(true);
+              }}
+            >
+              Register
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
       {/* Place Details Modal */}
       <Modal show={showPlaceDetails} onHide={() => setShowPlaceDetails(false)} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>{selectedPlace?.title} Destinations</Modal.Title>
+          <Modal.Title>{selectedCategory?.title} Destinations</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row xs={1} md={2} className="g-4">
-            {selectedPlace?.places.map((place) => (
+            {selectedCategory?.places.map((place) => (
               <Col key={place.id}>
-                <Card>
-                  <Card.Img 
-                    variant="top" 
-                    src={place.image} 
-                    style={{ height: '150px', objectFit: 'cover' }} 
+                <Card className="place-card">
+                  <Card.Img
+                    variant="top"
+                    src={place.image}
+                    className="place-img place-img--sm"
                   />
                   <Card.Body>
                     <Card.Title>{place.name}</Card.Title>
@@ -190,13 +230,13 @@ export default function Places() {
                       <span className="ms-2">{place.rating}</span>
                     </div>
                     <Card.Text>{place.description}</Card.Text>
-                    <Button 
-                      variant="primary" 
+                    <Button
+                      variant="primary"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleInterest(place);
                       }}
-                      className="w-100 position-relative"
+                      className="w-100 interest-btn"
                       disabled={loading}
                     >
                       {loading ? (
@@ -226,18 +266,17 @@ export default function Places() {
       </Modal>
 
       {/* Auth Modals */}
-<RegisterModal 
-        show={showRegister} 
-        handleClose={() => setShowRegister(false)} 
+      <RegisterModal
+        show={showRegister}
+        handleClose={() => setShowRegister(false)}
         showLogin={() => {
           setShowRegister(false);
           setShowLogin(true);
-        }} 
+        }}
       />
-      
-      <LoginModal 
-        show={showLogin} 
-        handleClose={() => setShowLogin(false)} 
+      <LoginModal
+        show={showLogin}
+        handleClose={() => setShowLogin(false)}
         showRegister={() => {
           setShowLogin(false);
           setShowRegister(true);

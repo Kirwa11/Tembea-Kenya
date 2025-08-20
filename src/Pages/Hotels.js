@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Modal, Spinner, Alert, Badge } from 'react-bootstrap';
 import { hotelCategories } from '../data/HotelsData';
-
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 const Hotels = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -9,6 +9,10 @@ const Hotels = () => {
   const [loading, setLoading] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [likedHotels, setLikedHotels] = useState(() => {
+    const saved = localStorage.getItem('likedHotels');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const handleViewMore = (category) => {
     setSelectedCategory(category);
@@ -25,6 +29,18 @@ const Hotels = () => {
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
     }, 1500);
+  };
+
+  const toggleLike = (hotelId, e) => {
+    e.stopPropagation();
+    setLikedHotels(prev => {
+      const isLiked = prev.includes(hotelId);
+      const newLikes = isLiked 
+        ? prev.filter(id => id !== hotelId)
+        : [...prev, hotelId];
+      localStorage.setItem('likedHotels', JSON.stringify(newLikes));
+      return newLikes;
+    });
   };
 
   const renderStars = (rating) => {
@@ -63,6 +79,12 @@ const Hotels = () => {
                   backgroundPosition: 'center'
                 }} 
               />
+              <div className="like-button" onClick={(e) => toggleLike(category.id, e)}>
+                {likedHotels.includes(category.id) ? 
+                  <FaHeart className="heart-icon filled" /> : 
+                  <FaRegHeart className="heart-icon" />
+                }
+              </div>
               <Card.Body className="d-flex flex-column">
                 <Card.Title>{category.title}</Card.Title>
                 <Card.Text className="text-muted">{category.description}</Card.Text>
@@ -103,6 +125,12 @@ const Hotels = () => {
                       backgroundPosition: 'center'
                     }} 
                   />
+                  <div className="like-button" onClick={(e) => toggleLike(place.id, e)}>
+                    {likedHotels.includes(place.id) ? 
+                      <FaHeart className="heart-icon filled" /> : 
+                      <FaRegHeart className="heart-icon" />
+                    }
+                  </div>
                   <Card.Body>
                     <Card.Title>{place.name}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">
