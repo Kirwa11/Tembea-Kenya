@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Badge, Modal } from 'react-bootstrap';
-import { FaMapMarkerAlt, FaStar, FaUser } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaStar } from 'react-icons/fa';
 import tourguide from '../data/Tourguide';
 
 const Tourguide = () => {
@@ -23,20 +23,12 @@ const Tourguide = () => {
         {tourguide.map((guide) => (
           <Col key={guide.id}>
             <Card className="h-100 shadow-sm border-0 hover-shadow transition">
-              <div 
-                className="position-relative"
-                style={{
-                  height: '200px',
-                  background: 'linear-gradient(45deg, #f8f9fa, #e9ecef)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'hidden'
-                }}
-              >
-                <div className="position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
-                  <FaUser className="text-muted" style={{ fontSize: '4rem', opacity: 0.3 }} />
-                </div>
+              <div className="position-relative" style={{ height: '200px', overflow: 'hidden' }}>
+                <Card.Img 
+                  src={guide.img}
+                  alt={guide.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
                 <div className="position-absolute bottom-0 start-0 p-3 text-white w-100" style={{ 
                   background: 'linear-gradient(transparent, rgba(0,0,0,0.7))' 
                 }}>

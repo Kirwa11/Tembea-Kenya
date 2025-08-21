@@ -21,7 +21,7 @@ const Navbar = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
-    }, 600); // Change color every minute
+    }, 9000); // Change color every minute
 
     return () => clearInterval(interval);
   }, [colors.length]);
