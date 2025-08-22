@@ -975,6 +975,400 @@
       height: 200px;
     }
   }
+  /* =======================================
+   Global Variables (Shared Across All Pages)
+   ======================================= */
+:root {
+  --primary-color: #ff6b35; /* Vibrant Kenyan orange for accents */
+  --secondary-color: #1a3c34; /* Dark green-blue for contrast */
+  --accent-color: #3498db; /* Bright blue for buttons and hovers */
+  --success-color: #4caf50; /* Green for positive actions */
+  --warning-color: #ffc107; /* Yellow for ratings and warnings */
+  --danger-color: #dc3545; /* Red for errors */
+  --text-light: #ffffff; /* White text for dark backgrounds */
+  --text-dark: #1a1a1a; /* Near-black for high contrast */
+  --text-muted: #4a4a4a; /* Darker muted text */
+  --background-light: #f9f9f9; /* Light background */
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0 0 12px rgba(52, 152, 219, 0.5);
+  --transition-fast: all 0.3s ease;
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --border-radius-sm: 10px;
+  --border-radius-md: 20px;
+  --font-family: 'Inter', 'Arial', sans-serif;
+  --navbar-height: 5.75rem; /* Desktop navbar height with buffer */
+}
+
+/* =======================================
+   Tour Guide Page Styles
+   ======================================= */
+.tourguide-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: calc(var(--navbar-height) + 1rem) 1.5rem 5rem;
+  background: linear-gradient(145deg, var(--background-light), #e6ecea);
+  font-family: var(--font-family);
+  min-height: 100vh;
+}
+
+.text-center.mb-5 h1 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  color: var(--text-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.text-center.mb-5 h1:after {
+  content: '';
+  display: block;
+  width: clamp(100px, 12vw, 120px);
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  margin: 0.5rem auto;
+  border-radius: 3px;
+}
+
+.text-center.mb-5 .text-muted {
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  line-height: 1.8;
+  color: var(--text-muted);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.guide-card {
+  border: none;
+  border-radius: var(--border-radius-md);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  transition: var(--transition-smooth);
+}
+
+.guide-card:hover {
+  transform: translateY(-10px) rotate(0.5deg);
+  box-shadow: var(--shadow-hover), var(--shadow-glow);
+}
+
+.guide-card .position-relative {
+  height: clamp(200px, 25vw, 300px);
+  overflow: hidden;
+}
+
+.guide-card .card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-smooth);
+}
+
+.guide-card:hover .card-img {
+  transform: scale(1.08);
+  filter: brightness(1.1);
+}
+
+.guide-card .position-absolute {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.guide-card .position-absolute svg {
+  font-size: 1.2rem;
+  color: var(--warning-color);
+  transition: var(--transition-fast);
+}
+
+.guide-card:hover .position-absolute svg {
+  transform: scale(1.2);
+}
+
+.guide-card .card-body {
+  padding: clamp(1.2rem, 2vw, 1.8rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.guide-card .card-title {
+  font-size: clamp(1.4rem, 2vw, 1.7rem);
+  font-weight: 800;
+  color: var(--text-dark);
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.guide-card .text-muted.small {
+  font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.guide-card .text-muted.small svg {
+  font-size: 1rem;
+}
+
+.guide-card .badge {
+  background: linear-gradient(135deg, var(--warning-color), var(--accent-color));
+  color: var(--text-light);
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-sm);
+  border: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: var(--transition-smooth);
+}
+
+.guide-card .badge:hover {
+  transform: scale(1.05);
+}
+
+.guide-card .btn-outline-warning {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  border: none;
+  border-radius: 30px;
+  padding: clamp(0.8rem, 1.8vw, 1rem) clamp(2rem, 3vw, 2.5rem);
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-light);
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-soft);
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.guide-card .btn-outline-warning::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.guide-card .btn-outline-warning:hover::after {
+  width: 200%;
+  height: 200%;
+}
+
+.guide-card .btn-outline-warning:hover {
+  background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover), var(--shadow-glow);
+}
+
+.guide-card .btn-outline-warning:active {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+@media (hover: none) {
+  .guide-card .btn-outline-warning:hover {
+    transform: none;
+    box-shadow: var(--shadow-soft);
+  }
+}
+
+/* Modal Styles */
+.modal-content {
+  border-radius: var(--border-radius-md);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-hover);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: var(--text-light);
+  border-bottom: none;
+  padding: clamp(0.8rem, 1.5vw, 1rem) 1.5rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.modal-title {
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+  font-weight: 700;
+}
+
+.modal-body {
+  padding: clamp(1.2rem, 2vw, 1.8rem);
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  color: var(--text-dark);
+}
+
+.modal-body p {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+.modal-body strong {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.modal-footer .btn-secondary {
+  background: linear-gradient(135deg, var(--secondary-color), var(--text-muted));
+  border: none;
+  border-radius: 30px;
+  padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.5rem, 2.5vw, 2rem);
+  font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+  font-weight: 600;
+  color: var(--text-light);
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-footer .btn-warning {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  border: none;
+  border-radius: 30px;
+  padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.5rem, 2.5vw, 2rem);
+  font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+  font-weight: 600;
+  color: var(--text-light);
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-footer .btn-secondary::after,
+.modal-footer .btn-warning::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.modal-footer .btn-secondary:hover::after,
+.modal-footer .btn-warning:hover::after {
+  width: 200%;
+  height: 200%;
+}
+
+.modal-footer .btn-secondary:hover {
+  background: linear-gradient(135deg, var(--text-muted), var(--secondary-color));
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.modal-footer .btn-warning:hover {
+  background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover), var(--shadow-glow);
+}
+
+.modal-footer .btn-secondary:active,
+.modal-footer .btn-warning:active {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+@media (hover: none) {
+  .modal-footer .btn-secondary:hover,
+  .modal-footer .btn-warning:hover {
+    transform: none;
+    box-shadow: var(--shadow-soft);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .tourguide-container {
+    padding: 5.25rem 1.2rem 4rem;
+  }
+
+  .guide-card .position-relative {
+    height: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tourguide-container {
+    padding: 4.75rem 1rem 3rem;
+  }
+
+  .guide-card .position-relative {
+    height: 200px;
+  }
+
+  .text-center.mb-5 h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .tourguide-container {
+    padding: 4.25rem 0.8rem 2rem;
+  }
+
+  .guide-card .position-relative {
+    height: 180px;
+  }
+
+  .guide-card .btn-outline-warning {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .modal-content {
+    padding: 1rem;
+  }
+
+  .modal-header {
+    padding: 0.8rem 1rem;
+  }
+
+  .modal-footer .btn-secondary,
+  .modal-footer .btn-warning {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Shared Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
   
   /* =======================================
      Car Hire Page Styles
